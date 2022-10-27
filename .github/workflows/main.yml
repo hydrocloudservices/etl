@@ -28,10 +28,4 @@ jobs:
             region = us-east-1
             source_profile = default" > ~/.aws/credentials
 
-            touch ~/.cdsapirc
-            echo "
-            url: https://cds.climate.copernicus.eu/api/v2
-            key: ${{ secrets.CDS_API_KEY }}
-            " > ~/.cdsapirc
-
             python pipeline/era5-land-spatial-kerchunk.py
