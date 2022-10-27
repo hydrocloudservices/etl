@@ -1,0 +1,19 @@
+name: etl
+channels:
+ - conda-forge
+dependencies:
+  - python=3.9*
+  - pip
+  - s3fs
+  - dask
+  - distributed
+  - fsspec
+  - numcodecs
+  - prefect=1.4.0
+  - xarray
+  - netcdf4
+  - scipy
+  - zarr
+  - intake
+  - pip:
+      - pangeo-forge-recipes
