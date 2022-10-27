@@ -9,7 +9,7 @@ from datetime import datetime
 import pandas as pd
 from prefect.executors import LocalDaskExecutor
 
-from .. import Config
+from config import Config
 
 
 def make_filename(variable, time):
