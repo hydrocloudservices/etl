@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 import pandas as pd
 from prefect.executors import LocalDaskExecutor
+from kerchunk.combine import MultiZarrToZarr
+import json
 
 from config import Config
 
@@ -100,14 +102,47 @@ def add_metadata_file(input_file, recipe):
 
 
 @task()
-def update_reference_file(recipe):
+def update_reference_file(config):
     """
     Determines list of all possible unique single variable daily files from a list of dates.
     It then compares if those files exist in the bucket (Config.BUCKET)
 
     :return: Matrix with dates and variables to extract
     """
-    finalize(recipe)
+    # finalize(recipe)
+    assert config.storage_config.target is not None, "target is required"
+    assert config.storage_config.metadata is not None, "metadata_cache is required"
+    remote_protocol = fsspec.utils.get_protocol(next(config.file_pattern.items())[1])
+
+    files = list(
+        config.storage_config.metadata.getitems(
+            list(config.storage_config.metadata.get_mapper())
+        ).values()
+    )  # returns dicts from remote
+    if len(files) == 1:
+        out = files[0]
+    else:
+        mzz = MultiZarrToZarr(
+            files,
+            remote_protocol=remote_protocol,
+            remote_options=config.netcdf_storage_options,
+            target_options=config.target_options,
+            coo_dtypes=config.coo_dtypes,
+            coo_map=config.coo_map,
+            identical_dims=config.identical_dims,
+            concat_dims=config.file_pattern.concat_dims,
+            preprocess=config.preprocess,
+            postprocess=config.postprocess,
+        )
+        # mzz does not support directly writing to remote yet
+        # get dict version and push it
+        out = mzz.translate()
+    fs = config.storage_config.target.fs
+    with open(config.output_json_fname, mode="wt") as f:
+        f.write(json.dumps(out))
+    fs.put(config.output_json_fname,
+           os.path.join(config.storage_config.target.root_path, config.output_json_fname),
+           overwrite=True)
 
 
 if __name__ == '__main__':
