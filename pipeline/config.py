@@ -9,8 +9,8 @@ class Config(object):
     REFERENCE_TARGET = 'era5/north-america/reanalysis/land'
     META_BUCKET = os.path.join(REFERENCE_TARGET,'meta')
 
-    CLIENT_KWARGS = {'endpoint_url': 'https://s3.us-east-2.wasabisys.com',
-                     'region_name': 'us-east-2'}
+    CLIENT_KWARGS = {'endpoint_url': 'https://s3.us-east-1.wasabisys.com',
+                     'region_name': 'us-east-1'}
     CONFIG_KWARGS = {'max_pool_connections': 30}
     PROFILE = 'default'
     STORAGE_OPTIONS = {'profile': PROFILE,
