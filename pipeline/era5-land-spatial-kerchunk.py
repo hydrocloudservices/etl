@@ -137,9 +137,11 @@ def update_reference_file(config):
         # mzz does not support directly writing to remote yet
         # get dict version and push it
         out = mzz.translate()
-    fs = config.storage_config.target.fs
+    # fs = config.storage_config.target.fs
     with open(config.output_json_fname, mode="wt") as f:
         f.write(json.dumps(out))
+
+    fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
     fs.put(config.output_json_fname,
            os.path.join(config.storage_config.target.root_path, config.output_json_fname),
            overwrite=True)
