@@ -4,7 +4,7 @@ import os
 class Config(object):
 
     # Bucket configuration
-    BUCKET = 's3://era5-atlantic-northeast/grib2/land/day'
+    BUCKET = 's3://era5/north-america/reanalysis/land/netcdf'
     HTTPS_BUCKET = 'https://s3.us-east-1.wasabisys.com/era5/north-america/reanalysis/land/netcdf'
     REFERENCE_TARGET = 'era5/north-america/reanalysis/land'
     META_BUCKET = os.path.join(REFERENCE_TARGET,'meta')
