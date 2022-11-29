@@ -10,17 +10,17 @@ import pandas as pd
 from prefect.executors import LocalDaskExecutor
 from kerchunk.combine import MultiZarrToZarr
 import json
-from typing import Dict, List, Tuple
 
 from config import Config
 
 
-def make_filename(variable: str, time: datetime) -> str:
-    return f"{Config.E5L_HTTPS_BUCKET}/{time.strftime('%Y%m%d')}_{str.upper(variable)}_ERA5_LAND_REANALYSIS.nc"
+def make_filename(variable, time):
+    return f"{Config.E5_HTTPS_BUCKET}/{time.strftime('%Y%m%d')}_{str.upper(variable)}_ERA5_SL_REANALYSIS.nc"
 
 
 @task()
-def get_file_pattern() -> FilePattern:
+def get_file_pattern():
+
     """
     Determines list of all possible unique single variable daily files from a list of dates.
     It then compares if those files exist in the bucket (Config.BUCKET)
@@ -29,18 +29,18 @@ def get_file_pattern() -> FilePattern:
     """
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
     current_filenames_in_bucket: list = [os.path.basename(filename)
-                                         for filename in fs.glob(os.path.join(Config.E5L_BUCKET, '*.nc'))]
+                                         for filename in fs.glob(os.path.join(Config.E5_BUCKET, '*.nc'))]
     end_date = \
         max([datetime.strptime(filename.split('_')[0][0:8], '%Y%m%d').date()
              for filename in current_filenames_in_bucket]) \
         .strftime('%Y%m%d')
 
-    dates = pd.date_range(Config.E5L_START_DATE, end_date)
+    dates = pd.date_range(Config.E5_START_DATE, end_date)
 
     pattern = FilePattern(
         make_filename,
         ConcatDim(name="time", keys=dates, nitems_per_file=24),
-        MergeDim(name="variable", keys=Config.E5L_VARIABLES)
+        MergeDim(name="variable", keys=Config.E5_VARIABLES)
     )
     return pattern
 
@@ -54,8 +54,8 @@ def create_recipe(pattern):
     :return: Matrix with dates and variables to extract
     """
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
-    target = FSSpecTarget(fs, Config.E5L_REFERENCE_TARGET)
-    metadata = MetadataTarget(fs, Config.E5L_META_BUCKET)
+    target = FSSpecTarget(fs, Config.E5_REFERENCE_TARGET)
+    metadata = MetadataTarget(fs, Config.E5_META_BUCKET)
     recipe = HDFReferenceRecipe(
         pattern,
         storage_config=StorageConfig(target=target, metadata=metadata),
@@ -80,7 +80,7 @@ def new_metadata_files(recipe):
     all_inputs = list(recipe.iter_inputs())
     meta_files = [recipe.file_pattern[i].split('/')[-1] + '.json' for i in all_inputs]
     current_meta_filenames_in_bucket: list = [os.path.basename(filename)
-                                              for filename in fs.ls(Config.E5L_META_BUCKET)]
+                                              for filename in fs.ls(Config.E5_META_BUCKET)]
     new_files = list(set(meta_files).difference(set(current_meta_filenames_in_bucket)))
 
     idx = [i for i, sublist in enumerate(meta_files)
@@ -149,7 +149,7 @@ def update_reference_file(config):
 
 if __name__ == '__main__':
 
-    with Flow("ERA5-Land-spatial-kerchunk") as flow:
+    with Flow("ERA5-spatial-kerchunk") as flow:
         pattern = get_file_pattern()
         recipe = create_recipe(pattern)
         input_files = new_metadata_files(recipe)
