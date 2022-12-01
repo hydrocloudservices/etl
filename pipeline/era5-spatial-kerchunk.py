@@ -113,10 +113,9 @@ def update_reference_file(config):
     assert config.storage_config.target is not None, "target is required"
     assert config.storage_config.metadata is not None, "metadata_cache is required"
     remote_protocol = fsspec.utils.get_protocol(next(config.file_pattern.items())[1])
-
     files = list(
         config.storage_config.metadata.getitems(
-            list(config.storage_config.metadata.get_mapper())
+            list(filter(None, config.storage_config.metadata.get_mapper()))
         ).values()
     )  # returns dicts from remote
     if len(files) == 1:
