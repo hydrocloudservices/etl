@@ -2,7 +2,7 @@ name: DataOps
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+  - cron: '0 */6 * * *'
 
 jobs:
   run:
@@ -11,9 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2
+      - uses: conda-incubator/setup-miniconda@v2.1.1
         with:
-          activate-environment: era5-forge
+          activate-environment: etl
+          mamba-version: "*"
           environment-file: .binder/environment.yml
           python-version: 3.8
           auto-activate-base: false
@@ -28,4 +29,6 @@ jobs:
             region = us-east-1
             source_profile = default" > ~/.aws/credentials
 
+            python pipeline/era5-spatial-kerchunk.py
             python pipeline/era5-land-spatial-kerchunk.py
+            
