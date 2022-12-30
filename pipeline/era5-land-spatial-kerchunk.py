@@ -30,7 +30,7 @@ def get_file_pattern() -> FilePattern:
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
     current_filenames_in_bucket: list = [os.path.basename(filename)
                                          for filename in fs.glob(os.path.join(Config.E5L_BUCKET, '*.nc'))]
-    end_date = '20221217' # Temporary while precipitation is being decumulated (tp) #\
+    end_date = '20221001' # Temporary while precipitation is being decumulated (tp) #\
         # max([datetime.strptime(filename.split('_')[0][0:8], '%Y%m%d').date()
         #      for filename in current_filenames_in_bucket]) \
         # .strftime('%Y%m%d')
