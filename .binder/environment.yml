@@ -2,14 +2,14 @@ name: etl
 channels:
  - conda-forge
 dependencies:
-  - python=3.8*
+  - python=3.9*
   - pip
   - s3fs
   - dask
   - distributed
   - fsspec
   - numcodecs
-  - prefect=1.4.0
+  - prefect=1.2.4
   - xarray
   - netcdf4
   - scipy

@@ -21,7 +21,7 @@ class Config(object):
     E5_REFERENCE_TARGET = 'era5/world/reanalysis/single-levels'
     E5_META_BUCKET = os.path.join(E5_REFERENCE_TARGET,'meta')
 
-    E5_START_DATE = "1959-01-01"
+    E5_START_DATE = "1959-01-02"
     E5_VARIABLES = [
         "t2m",
         "tp",
@@ -38,4 +38,15 @@ class Config(object):
         "t2m",
         "tp",
         "sd"
+    ]
+
+    # ERA5 (single levels - time series)
+    E5_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/era5/world/reanalysis/single-levels/netcdf4'
+    E5_BUCKET_ZARR_TS = 'era5/world/reanalysis/single-levels/zarr/timeseries_real_time'
+
+    E5_TARGET_CHUNKS_TS = {"latitude": 7, "longitude": 7, "time": 2880}
+    E5_START_DATE_TS = "1959-01-01"
+    E5_VARIABLES_TS = [
+        "t2m",
+        "tp"
     ]
