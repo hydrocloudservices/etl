@@ -65,7 +65,7 @@ def create_recipe(pattern):
     :return: Matrix with dates and variables to extract
     """
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="/tmp/era5/timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
 
     recipe = XarrayZarrRecipe(
         file_pattern=pattern,
@@ -84,7 +84,7 @@ def prepare_target_task(config):
 @task()
 def post_precess_dims(recipe, end_date):
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="/tmp/era5/timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
 
     inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
         '%Y%m%d')
@@ -127,7 +127,7 @@ def finalize_target_task(recipe):
 @ task()
 def push_data_to_bucket():
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="/tmp/era5/timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
 
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
     target_remote = FSSpecTarget(fs=fs, root_path=Config.E5_BUCKET_ZARR_TS)
@@ -141,15 +141,15 @@ def push_data_to_bucket():
 if __name__ == '__main__':
 
     with Flow("ERA5-time-series") as flow:
-        # pattern, end_date, years = get_file_pattern()
-        # config = create_recipe(pattern)
-        # next_index = get_next_index(years, upstream_tasks=[config])
-        # prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
-        # filenames = get_files_to_process(config, next_index)
-        # store = store_chunk_task.map(filenames, recipe=unmapped(config))
-        # postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
-        # finalize_target_task(config, upstream_tasks=[postprocess])
-        push_data_to_bucket()
+        pattern, end_date, years = get_file_pattern()
+        config = create_recipe(pattern)
+        next_index = get_next_index(years, upstream_tasks=[config])
+        prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
+        filenames = get_files_to_process(config, next_index, upstream_tasks=[prepare])
+        store = store_chunk_task.map(filenames, recipe=unmapped(config))
+        postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
+        finalize_target_task(config, upstream_tasks=[postprocess])
+        push_data_to_bucket(upstream_tasks=[finalize_target_task])
 
     state = flow.run()
 
