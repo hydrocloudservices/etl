@@ -148,8 +148,8 @@ if __name__ == '__main__':
         filenames = get_files_to_process(config, next_index, upstream_tasks=[prepare])
         store = store_chunk_task.map(filenames, recipe=unmapped(config))
         postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
-        finalize_target_task(config, upstream_tasks=[postprocess])
-        push_data_to_bucket(upstream_tasks=[finalize_target_task])
+        final = finalize_target_task(config, upstream_tasks=[postprocess])
+        push_data_to_bucket(upstream_tasks=[final])
 
     state = flow.run()
 
