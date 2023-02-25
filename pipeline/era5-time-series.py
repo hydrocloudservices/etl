@@ -141,15 +141,15 @@ def push_data_to_bucket():
 if __name__ == '__main__':
 
     with Flow("ERA5-time-series") as flow:
-        # pattern, end_date, years = get_file_pattern()
-        # config = create_recipe(pattern)
-        # next_index = get_next_index(years, upstream_tasks=[config])
-        # prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
-        # filenames = get_files_to_process(config, next_index)
-        # store = store_chunk_task.map(filenames, recipe=unmapped(config))
-        # postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
-        # finalize_target_task(config, upstream_tasks=[postprocess])
-        push_data_to_bucket()
+        pattern, end_date, years = get_file_pattern()
+        config = create_recipe(pattern)
+        next_index = get_next_index(years, upstream_tasks=[config])
+        prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
+        filenames = get_files_to_process(config, next_index)
+        store = store_chunk_task.map(filenames, recipe=unmapped(config))
+        postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
+        finalize_target_task(config, upstream_tasks=[postprocess])
+        push_data_to_bucket(upstream_tasks=[finalize_target_task])
 
     state = flow.run()
 
