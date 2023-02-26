@@ -146,8 +146,8 @@ if __name__ == '__main__':
         next_index = get_next_index(years, upstream_tasks=[config])
         prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
         filenames = get_files_to_process(config, next_index, upstream_tasks=[prepare])
-        # store = store_chunk_task.map(filenames, recipe=unmapped(config))
-        postprocess = post_precess_dims(config, end_date, upstream_tasks=[filenames])
+        store = store_chunk_task.map(filenames, recipe=unmapped(config))
+        postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
         final = finalize_target_task(config, upstream_tasks=[postprocess])
         push_data_to_bucket(upstream_tasks=[final])
 
