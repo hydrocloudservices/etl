@@ -16,6 +16,7 @@ from pangeo_forge_recipes.recipes.xarray_zarr import prepare_target, finalize_ta
 import shutil
 import os
 from prefect.executors import DaskExecutor
+from dask.distributed import Client
 
 from config import Config
 
@@ -151,6 +152,7 @@ if __name__ == '__main__':
         final = finalize_target_task(config, upstream_tasks=[postprocess])
         push_data_to_bucket(upstream_tasks=[final])
 
-    state = flow.run()
-
+    client = Client()
+    executor = DaskExecutor(address=client.scheduler.address)
+    flow.run(executor=executor)
 
