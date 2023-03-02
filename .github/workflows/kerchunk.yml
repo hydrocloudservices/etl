@@ -1,4 +1,4 @@
-name: DataOps
+name: DataOps - Kerchunk
 
 on:
   schedule:
@@ -29,7 +29,8 @@ jobs:
             region = us-east-1
             source_profile = default" > ~/.aws/credentials
             
-            python pipeline/era5-time-series.py
+            python pipeline/era5-spatial-kerchunk.py
+            python pipeline/era5-land-spatial-kerchunk.py
 
             
             
