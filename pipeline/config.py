@@ -28,8 +28,8 @@ class Config(object):
     ]
 
     # ERA5-Land
-    E5L_BUCKET = 's3://era5/north-america/reanalysis/land/netcdf'
-    E5L_HTTPS_BUCKET = 'https://s3.us-east-1.wasabisys.com/era5/north-america/reanalysis/land/netcdf'
+    E5L_BUCKET = 's3://era5/north-america/reanalysis/land/netcdf4'
+    E5L_HTTPS_BUCKET = 'https://s3.us-east-1.wasabisys.com/era5/north-america/reanalysis/land/netcdf4'
     E5L_REFERENCE_TARGET = 'era5/north-america/reanalysis/land'
     E5L_META_BUCKET = os.path.join(E5L_REFERENCE_TARGET,'meta')
 
