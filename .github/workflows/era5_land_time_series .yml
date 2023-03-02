@@ -1,4 +1,4 @@
-name: DataOps - ERA5 Time series
+name: DataOps - ERA5-Land Time series
 
 on:
   push:
