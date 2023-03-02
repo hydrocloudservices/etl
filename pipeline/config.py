@@ -16,12 +16,12 @@ class Config(object):
     ## Bucket configuration
 
     # ERA5 (single levels)
-    E5_BUCKET = 's3://era5/world/reanalysis/single-levels/netcdf'
-    E5_HTTPS_BUCKET = 'https://s3.us-east-1.wasabisys.com/era5/world/reanalysis/single-levels/netcdf'
+    E5_BUCKET = 's3://era5/world/reanalysis/single-levels/netcdf4'
+    E5_HTTPS_BUCKET = 'https://s3.us-east-1.wasabisys.com/era5/world/reanalysis/single-levels/netcdf4'
     E5_REFERENCE_TARGET = 'era5/world/reanalysis/single-levels'
     E5_META_BUCKET = os.path.join(E5_REFERENCE_TARGET,'meta')
 
-    E5_START_DATE = "1959-01-02"
+    E5_START_DATE = "1959-01-01"
     E5_VARIABLES = [
         "t2m",
         "tp",
