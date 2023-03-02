@@ -50,3 +50,15 @@ class Config(object):
         "t2m",
         "tp"
     ]
+
+        # ERA5 (land - time series)
+    E5L_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/era5/north-america/reanalysis/land/netcdf4'
+    E5L_BUCKET_ZARR_TS = 'era5/north-america/reanalysis/land/zarr/timeseries_real_time'
+
+    E5L_TARGET_CHUNKS_TS = {"latitude": 7, "longitude": 7, "time": 2160}
+    E5L_START_DATE_TS = "1959-01-01"
+    E5L_VARIABLES_TS = [
+        "t2m",
+        "tp",
+        "sd"
+    ]
