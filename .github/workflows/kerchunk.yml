@@ -1,8 +1,7 @@
 name: DataOps - Kerchunk
 
 on:
-  schedule:
-    - cron: '0 */12 * * *'
+  push:
 
 jobs:
   run:
