@@ -20,7 +20,7 @@ from config import Config
 
 
 def make_filename(variable, time):
-    return f"{Config.E5L_BUCKET_TS}/{time.strftime('%Y%m%d')}_{str.upper(variable)}_ERA5_SL_REANALYSIS.nc"
+    return f"{Config.E5L_BUCKET_TS}/{time.strftime('%Y%m%d')}_{str.upper(variable)}_ERA5_LAND_REANALYSIS.nc"
 
 
 @task(nout=3)
