@@ -103,7 +103,7 @@ def get_next_index(years):
         store = target_remote.get_mapper()
         last_index = xr.open_zarr(store, consolidated=True).time[-1].dt.strftime('%Y-%m-%d').values.tolist()
         df = (years.to_series().reset_index(name='date').date == last_index)
-        next_index = (df[df == True].index.values[0] + 1) * len(Config.ESL_VARIABLES_TS)
+        next_index = (df[df == True].index.values[0] + 1) * len(Config.E5L_VARIABLES_TS)
     except:
         next_index = 0
         pass
