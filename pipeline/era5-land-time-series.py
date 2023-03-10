@@ -33,6 +33,13 @@ def get_file_pattern():
     """
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
 
+    current_filenames_in_bucket: list = [os.path.basename(filename)
+                                         for filename in fs.glob(os.path.join(Config.E5L_BUCKET_TS, '*.nc'))]
+    end_date_2 = \
+        max([datetime.strptime(filename.split('_')[0][0:8], '%Y%m%d').date()
+             for filename in current_filenames_in_bucket]) \
+        .strftime('%Y%m%d')
+
     delta_days = int(Config.E5L_TARGET_CHUNKS_TS['time']/24)
 
     # Get last index
@@ -41,6 +48,8 @@ def get_file_pattern():
         store = target_remote.get_mapper()
         last_index = xr.open_zarr(store, consolidated=True).time[-1].dt.strftime('%Y-%m-%d').values.tolist()
         end_date = (datetime.datetime.strptime(last_index, '%Y-%m-%d') + datetime.timedelta(days=delta_days)).strftime('%Y%m%d')
+
+        end_date = min([end_date, end_date_2])
     except:
         end_date = pd.date_range(Config.E5L_START_DATE_TS, periods=delta_days)[-1].strftime('%Y%m%d')
         pass
