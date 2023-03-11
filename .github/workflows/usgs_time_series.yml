@@ -1,4 +1,4 @@
-name: DataOps - ERA5 Time series
+name: DataOps - USGS Time series
 
 on:
   schedule:
