@@ -2,7 +2,7 @@ name: DataOps - USGS Time series
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 17 * * *'
 
 jobs:
   run:
