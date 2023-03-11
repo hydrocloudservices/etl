@@ -21,6 +21,7 @@ dependencies:
   - dataretrieval
   - timezonefinder
   - numba
+  - hvplot
   - xesmf
   - clisops
   - dask-geopandas
