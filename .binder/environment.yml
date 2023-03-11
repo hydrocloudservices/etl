@@ -15,5 +15,15 @@ dependencies:
   - scipy
   - zarr
   - intake
+  - dask-geopandas
+  - intake-geopandas
+  - pyarrow
+  - dataretrieval
+  - timezonefinder
+  - numba
+  - xesmf
+  - clisops
+  - dask-geopandas
   - pip:
       - pangeo-forge-recipes
+      - git+https://github.com/hydrologie/xdatasets.git

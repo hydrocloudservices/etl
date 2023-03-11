@@ -62,3 +62,8 @@ class Config(object):
         "tp",
         "sd"
     ]
+
+        # USGS (time series)
+    USGS_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/hydrometric/timeseries'
+    USGS_BUCKET_ZARR_TS = 'hydrometric/timeseries'
+
