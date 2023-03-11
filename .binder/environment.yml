@@ -24,7 +24,7 @@ dependencies:
   - xesmf
   - clisops
   - dask-geopandas
-  - IPython
+  - ipython
   - pip:
       - pangeo-forge-recipes
       - git+https://github.com/hydrologie/xdatasets.git
