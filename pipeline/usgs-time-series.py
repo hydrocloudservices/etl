@@ -136,9 +136,8 @@ if __name__ == '__main__':
     zarrs = fs.glob('hydrometric/timeseries/*')
     files_already_processed = [os.path.basename(file) for file in zarrs
                                    if fs.info(f'{file}/.zmetadata')['LastModified'].date() <
-                                    (datetime.datetime.today() + datetime.timedelta(days=7)).date()
+                                    (datetime.today() + timedelta(days=7)).date()
     ]
-
 
     iterable = []
     for idx, row in df_stations.iterrows():
