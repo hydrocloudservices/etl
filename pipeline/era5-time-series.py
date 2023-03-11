@@ -34,7 +34,7 @@ def get_file_pattern():
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
 
     current_filenames_in_bucket: list = [os.path.basename(filename)
-                                         for filename in fs.glob(os.path.join(Config.E5_BUCKET_TS, '*.nc'))]
+                                         for filename in fs.glob(os.path.join(Config.E5_BUCKET.replace('s3://',''), '*.nc'))]
     end_date_2 = \
         max([datetime.strptime(filename.split('_')[0][0:8], '%Y%m%d').date()
              for filename in current_filenames_in_bucket]) \
