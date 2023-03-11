@@ -141,11 +141,10 @@ if __name__ == '__main__':
 
     iterable = []
     for idx, row in df_stations.iterrows():
+        site = row.number
+        latitude = row.gauge_lat
+        longitude = row.gauge_lon
         if site not in files_already_processed:
-            site = row.number
-            latitude = row.gauge_lat
-            longitude = row.gauge_lon
-            
             poly = gdf[gdf.gauge_id == f"hysets_{site}"].reset_index(drop=True).compute()
             iterable.append([site, latitude, longitude, poly])
 
