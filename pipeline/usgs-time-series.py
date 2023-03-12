@@ -159,5 +159,3 @@ if __name__ == '__main__':
     executor = DaskExecutor(address=client.scheduler.address)
     flow.run(executor=executor)
 
-    client.close()
-
