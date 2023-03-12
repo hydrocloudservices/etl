@@ -118,10 +118,6 @@ def process_one_file(row):
 
 if __name__ == '__main__':
 
-
-
-    client = Client(processes=True)
-
     # Move hard-coded path to Config.py
     gdf = dask_geopandas.read_parquet('s3://hydrometric/shapefiles/geoparquet', 
                                       storage_options=Config.STORAGE_OPTIONS)
@@ -153,9 +149,5 @@ if __name__ == '__main__':
     with Flow("USGS-time-series") as flow:
         process_one_file.map(iterable)
 
-
-    from prefect.executors import DaskExecutor
-
-    executor = DaskExecutor(address=client.scheduler.address)
-    flow.run(executor=executor)
+    flow.run()
 
