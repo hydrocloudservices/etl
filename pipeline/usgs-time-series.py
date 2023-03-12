@@ -95,8 +95,8 @@ def merge_datasets(ds, ds_clim):
 
 def save_zarr(ds, site):
     try:
-        if 'id' in ds.dims:
-            ds.to_zarr(f's3://hydrometric/timeseries2/{site}', 
+        if 'id' in ds.coords:
+            ds.to_zarr(f's3://hydrometric/timeseries/{site}', 
                         consolidated=True,
                         mode='w',
                         storage_options=Config.STORAGE_OPTIONS)
