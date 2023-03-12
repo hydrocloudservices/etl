@@ -99,7 +99,7 @@ def post_precess_dims(recipe, end_date):
         '%Y%m%d')
     store = recipe.storage_config.target.get_mapper()
     ds = xr.open_zarr(store, consolidated=False, decode_times=False)
-    ds['time'] = pd.date_range(Config.E5_START_DATE_TS, inclusive_end_date, freq='H', inclusive='left')
+    ds['time'] = pd.date_range(Config.E5_START_DATE_TS, inclusive_end_date, freq='H', closed='left')
     ds.to_zarr(target.get_mapper(), compute=False, mode='a')
     zarr.consolidate_metadata(store)
 
