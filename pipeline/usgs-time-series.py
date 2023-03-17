@@ -145,17 +145,20 @@ if __name__ == '__main__':
 
     iterable = []
     for idx, row in gdf.iterrows():
-        latitude = None
-        longitude = None
-        site = row.id
+        try:
+            latitude = None
+            longitude = None
+            site = row.id
 
-        oneSite = nwis.what_sites(sites=site)
-        latitude = oneSite[0].dec_lat_va.values[0]
-        longitude = oneSite[0].dec_long_va.values[0]
-        print(f"{idx}: {site}")
-        if site not in files_already_processed:
-            poly = gdf.loc[gdf.id == site]
-            iterable.append([site, latitude, longitude, poly])
+            oneSite = nwis.what_sites(sites=site)
+            latitude = oneSite[0].dec_lat_va.values[0]
+            longitude = oneSite[0].dec_long_va.values[0]
+            print(f"{idx}: {site}")
+            if site not in files_already_processed:
+                poly = gdf.loc[gdf.id == site]
+                iterable.append([site, latitude, longitude, poly])
+        except:
+            pass
 
 
     with Flow("USGS-time-series") as flow:
