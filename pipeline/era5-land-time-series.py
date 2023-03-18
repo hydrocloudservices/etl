@@ -105,14 +105,22 @@ def post_precess_dims(recipe, end_date):
 
 @task()
 def get_next_index(years):
-    fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
-    target_remote = FSSpecTarget(fs=fs, root_path=Config.E5L_BUCKET_ZARR_TS)
+    #fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
+    #target_remote = FSSpecTarget(fs=fs, root_path=Config.E5L_BUCKET_ZARR_TS)
 
     try:
-        store = target_remote.get_mapper()
-        last_index = xr.open_zarr(store, consolidated=True).time[-1].dt.strftime('%Y-%m-%d').values.tolist()
-        df = (years.to_series().reset_index(name='date').date == last_index)
-        next_index = (df[df == True].index.values[0] + 1) * len(Config.E5L_VARIABLES_TS)
+        # store = target_remote.get_mapper()
+        # last_index = xr.open_zarr(store, consolidated=True).time[-1].dt.strftime('%Y-%m-%d').values.tolist()
+        # df = (years.to_series().reset_index(name='date').date == last_index)
+        # next_index = (df[df == True].index.values[0] + 1) * len(Config.E5L_VARIABLES_TS)
+
+        # Try this approach instead 
+        delta_days = int(Config.E5L_TARGET_CHUNKS_TS['time']/24)
+        last_index_2 = pd.date_range(start=years[0],
+                                     end=years[-1],
+                                     freq=f"{delta_days}D")[-1]
+        df = (years.to_series().reset_index(name='date').date == last_index_2)
+        next_index = (df[df == True].index.values[0]) * len(Config.E5L_VARIABLES_TS)
     except:
         next_index = 0
         pass
