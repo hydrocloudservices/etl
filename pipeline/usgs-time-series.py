@@ -14,7 +14,7 @@ from timezonefinder import TimezoneFinder
 import numpy as np
 import xdatasets as xd
 import dask_geopandas
-
+import random
 
 from config import Config
 
@@ -162,7 +162,7 @@ if __name__ == '__main__':
 
     print(len(iterable))
     with Flow("USGS-time-series") as flow:
-        process_one_file.map(iterable[0:60])
+        process_one_file.map(random.sample(iterable, 60))
 
     flow.run()
 
