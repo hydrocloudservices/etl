@@ -31,6 +31,7 @@ jobs:
             
             python pipeline/era5-spatial-kerchunk.py
             python pipeline/era5-land-spatial-kerchunk.py
+            python pipeline/hydrometric-kerchunk.py
 
             
             

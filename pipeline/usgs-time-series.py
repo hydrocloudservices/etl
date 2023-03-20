@@ -162,7 +162,7 @@ if __name__ == '__main__':
 
     print(len(iterable))
     with Flow("USGS-time-series") as flow:
-        process_one_file.map(iterable[0:70])
+        process_one_file.map(iterable[0:60])
 
     flow.run()
 
