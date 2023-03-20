@@ -93,7 +93,7 @@ def update_reference_file(refs):
 
 if __name__ == '__main__':
 
-    with Flow("ERA5-spatial-kerchunk") as flow:
+    with Flow("Hydrometric-kerchunk") as flow:
         current_filenames_in_bucket = get_files_to_process()
         refs = extract_metadata(current_filenames_in_bucket)
         update_reference_file(refs)
