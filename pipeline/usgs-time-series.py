@@ -92,6 +92,11 @@ def merge_datasets(ds, ds_clim):
         print(ds)
         ds_clim = ds_clim.drop(['latitude','longitude','id'])
         ds_combined = xr.merge([ds, ds_clim])
+
+        ds_combined = ds_combined.chunk({'time': 22500,
+                                         'id': 1,
+                                         'source': 1})
+
     except:
         pass
     return ds_combined
