@@ -67,3 +67,8 @@ class Config(object):
     USGS_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/hydrometric/timeseries'
     USGS_BUCKET_ZARR_TS = 'hydrometric/timeseries'
 
+        # Hydrometric (time series)
+    COMBINED_HYDROMETRIC_JSON = 'streamflow_combined.json'
+    HYDROMETRIC_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/hydrometric/timeseries'
+    HYDROMETRIC_BUCKET_ZARR_TS = 'hydrometric/timeseries'
+    HYDROMETRIC_ROOT_TS = 'hydrometric'

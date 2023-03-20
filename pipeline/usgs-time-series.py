@@ -23,9 +23,9 @@ from config import Config
 def download_date(site):
     df = None
     try:
-        df = nwis.get_record(sites=site, service='dv',  parameterCd='00060', start='1900-01-01', end='2023-03-15')
-        df['00060_Mean'] = df['00060_Mean'].mask(df['00060_Mean'] < 0)
-        df = df[['00060_Mean', '00060_Mean_cd']]
+        df = nwis.get_record(sites=site, service='dv',  parameterCd='00060', start='1900-01-01', end=datetime.now().strftime('%Y-%m-%d'))
+        df.iloc[:,0] = df.iloc[:,0].mask(df.iloc[:,0] < 0)
+        df = df.iloc[:,:2]
         df.columns = ['discharge', 'discharge_flag']
         df.index.names = ['time']
         df['source'] = 'USGS'
@@ -39,7 +39,7 @@ def download_date(site):
 def process(df, site):
     ds = None
     try:
-        ds = pd.DataFrame(index=pd.date_range('1900-01-01','2023-03-15')).to_xarray().rename({'index':'time'})
+        ds = pd.DataFrame(index=pd.date_range('1900-01-01',datetime.now().strftime('%Y-%m-%d'))).to_xarray().rename({'index':'time'})
         ds_add = df.to_xarray()
         ds_add['time'] = pd.to_datetime(ds_add['time'])
         ds_add = ds_add.expand_dims({'id': [site]})
