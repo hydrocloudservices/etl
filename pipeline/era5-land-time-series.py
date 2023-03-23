@@ -142,16 +142,31 @@ def finalize_target_task(recipe):
 
 @ task()
 def push_data_to_bucket():
+
     lfs = LocalFileSystem()
     target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    tmp_target = FSSpecTarget(fs=lfs, root_path="tmp_timeseries_real_time")
+
+    dirs = target.fs.glob('timeseries_real_time/*')
+    for directory in dirs:
+        if os.path.isdir(directory):
+            os.mkdir(directory.replace('timeseries_real_time','tmp_timeseries_real_time'))
+    filenames = target.fs.glob('timeseries_real_time/*/*') + target.fs.glob('timeseries_real_time/*')
+    filenames = [filename for filename in filenames if 'z' in filename or '/time/' in filename]
+
+    for filename in filenames:
+        lfs.move(filename, filename.replace('timeseries_real_time','tmp_timeseries_real_time'))
 
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
-    target_remote = FSSpecTarget(fs=fs, root_path=Config.E5L_BUCKET_ZARR_TS)
+    target_remote = FSSpecTarget(fs=fs, root_path=Config.E5_BUCKET_ZARR_TS)
 
     fs.put(target.root_path, os.path.dirname(Config.E5L_BUCKET_ZARR_TS), recursive=True)
-    zarr.consolidate_metadata(target_remote.get_mapper())
+    fs.put(tmp_target.root_path, os.path.dirname(Config.E5L_BUCKET_ZARR_TS), recursive=True)
+
+    #zarr.consolidate_metadata(target_remote.get_mapper())
 
     shutil.rmtree(target.root_path)
+    shutil.rmtree(tmp_target.root_path)
 
 
 if __name__ == '__main__':
