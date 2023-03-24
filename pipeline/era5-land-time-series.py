@@ -163,19 +163,22 @@ def push_data_to_bucket():
     fs.put(target.root_path, os.path.dirname(Config.E5L_BUCKET_ZARR_TS), recursive=True)
 
     shutil.rmtree(target.root_path)
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    #target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
 
-    filenames = target.fs.glob('tmp_timeseries_real_time/*/*')
+    #filenames = target.fs.glob('tmp_timeseries_real_time/*/*')
 
-    for filename in filenames:
-        lfs.move(filename, filename.replace('tmp_timeseries_real_time','timeseries_real_time'))
+    lfs.move('tmp_timeseries_real_time/',
+             'timeseries_real_time', recursive=True)
 
-    fs.put(target.root_path, os.path.dirname(Config.E5L_BUCKET_ZARR_TS), recursive=True)
+    # for filename in filenames:
+    #     lfs.move(filename, filename.replace('tmp_timeseries_real_time','timeseries_real_time'))
+
+    fs.put(target.root_path, os.path.dirname(Config.E5_BUCKET_ZARR_TS), recursive=True)
 
     #zarr.consolidate_metadata(target_remote.get_mapper())
 
     shutil.rmtree(target.root_path)
-    shutil.rmtree(tmp_target.root_path)
+    #shutil.rmtree(tmp_target.root_path)
 
 
 if __name__ == '__main__':
