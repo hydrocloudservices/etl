@@ -175,7 +175,7 @@ def push_data_to_bucket():
 
     fs.put(target.root_path, os.path.dirname(Config.E5_BUCKET_ZARR_TS), recursive=True)
 
-    #zarr.consolidate_metadata(target_remote.get_mapper())
+    zarr.consolidate_metadata(target_remote.get_mapper())
 
     shutil.rmtree(target.root_path)
     #shutil.rmtree(tmp_target.root_path)
