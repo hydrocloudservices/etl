@@ -21,7 +21,7 @@ class Config(object):
     E5_REFERENCE_TARGET = 'era5/world/reanalysis/single-levels'
     E5_META_BUCKET = os.path.join(E5_REFERENCE_TARGET,'meta')
 
-    E5_START_DATE = "1959-01-01"
+    E5_START_DATE = "2023-01-01"
     E5_VARIABLES = [
         "t2m",
         "tp",
@@ -33,7 +33,7 @@ class Config(object):
     E5L_REFERENCE_TARGET = 'era5/north-america/reanalysis/land'
     E5L_META_BUCKET = os.path.join(E5L_REFERENCE_TARGET,'meta')
 
-    E5L_START_DATE = "1950-01-01"
+    E5L_START_DATE = "2023-01-01"
     E5L_VARIABLES = [
         "t2m",
         "tp",
