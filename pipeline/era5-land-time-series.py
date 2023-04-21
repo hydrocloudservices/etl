@@ -90,14 +90,14 @@ def prepare_target_task(config):
 
 
 @task()
-def post_precess_dims(recipe, end_date):
+def post_process_dims(recipe, end_date):
     lfs = LocalFileSystem()
     target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
 
     inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
         '%Y%m%d')
     store = recipe.storage_config.target.get_mapper()
-    ds = xr.open_zarr(store, consolidated=True, decode_times=False)
+    ds = xr.open_zarr(store, consolidated=False, decode_times=False)
     ds['time'] = pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')
     ds.to_zarr(target.get_mapper(), compute=False, mode='a')
     zarr.consolidate_metadata(store)
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
         filenames = get_files_to_process(config, next_index, upstream_tasks=[prepare])
         store = store_chunk_task.map(filenames, recipe=unmapped(config))
-        postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
+        postprocess = post_process_dims(config, end_date, upstream_tasks=[store])
         final = finalize_target_task(config, upstream_tasks=[postprocess])
         push_data_to_bucket(upstream_tasks=[final])
 
