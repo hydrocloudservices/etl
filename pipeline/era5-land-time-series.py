@@ -96,7 +96,7 @@ def post_process_dims(recipe, end_date):
 
     inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
         '%Y%m%d')
-     pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')\
+    pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')\
     .to_series(name='time') \
     .to_frame() \
     .set_index('time') \
