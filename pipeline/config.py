@@ -44,8 +44,11 @@ class Config(object):
     E5_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/era5/world/reanalysis/single-levels/netcdf4'
     E5_BUCKET_ZARR_TS = 'era5/world/reanalysis/single-levels/zarr/timeseries_real_time'
 
+    E5_BUCKET_ZARR_TS_NEW = 'era5/world/reanalysis/single-levels/zarr/timeseries'
+
     E5_TARGET_CHUNKS_TS = {"latitude": 7, "longitude": 7, "time": 1440}
     E5_START_DATE_TS = "1959-01-01"
+    E5_START_DATE_TS_NEW = "1940-01-01"
     E5_VARIABLES_TS = [
         "t2m",
         "tp"
