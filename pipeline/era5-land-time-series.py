@@ -109,7 +109,7 @@ def post_process_dims(recipe, end_date):
 #     ds = xr.open_zarr(store, consolidated=False, decode_times=False)
 #     ds['time'] = pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')
 #     ds.to_zarr(target.get_mapper(), compute=False, mode='a')
-    zarr.consolidate_metadata(store)
+    # zarr.consolidate_metadata(store)
 
 
 @task()
