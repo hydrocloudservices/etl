@@ -105,11 +105,11 @@ def post_process_dims(recipe, end_date):
 
     lfs.cp('tmp.zarr/time/', 'timeseries_real_time/time', recursive=True)
     
-#     store = recipe.storage_config.target.get_mapper()
+    store = recipe.storage_config.target.get_mapper()
 #     ds = xr.open_zarr(store, consolidated=False, decode_times=False)
 #     ds['time'] = pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')
 #     ds.to_zarr(target.get_mapper(), compute=False, mode='a')
-    # zarr.consolidate_metadata(store)
+    zarr.consolidate_metadata(store)
 
 
 @task()
@@ -158,7 +158,7 @@ def push_data_to_bucket():
     target_remote = FSSpecTarget(fs=fs, root_path=Config.E5L_BUCKET_ZARR_TS)
 
     fs.put(target.root_path, os.path.dirname(Config.E5L_BUCKET_ZARR_TS), recursive=True)
-    zarr.consolidate_metadata(target_remote.get_mapper())
+    #zarr.consolidate_metadata(target_remote.get_mapper())
 
     shutil.rmtree(target.root_path)
 
