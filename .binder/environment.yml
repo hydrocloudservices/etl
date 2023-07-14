@@ -28,5 +28,5 @@ dependencies:
   - dask-geopandas
   - ipython
   - pip:
-      - pangeo-forge-recipes
+      - pangeo-forge-recipes==0.9.4
       - git+https://github.com/hydrologie/xdatasets.git
