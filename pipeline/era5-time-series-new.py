@@ -104,7 +104,7 @@ def post_precess_dims(recipe, end_date):
     # zarr.consolidate_metadata(store)
 
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
     inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
         '%Y%m%d')
@@ -115,7 +115,7 @@ def post_precess_dims(recipe, end_date):
     .to_xarray() \
     .to_zarr('tmp.zarr', consolidated=True, mode='w')
 
-    lfs.cp('tmp.zarr/time/', 'timeseries_real_time/time', recursive=True)
+    lfs.cp('tmp.zarr/time/', 'timeseries_real_time2/time', recursive=True)
     
     store = recipe.storage_config.target.get_mapper()
     zarr.consolidate_metadata(store)
@@ -162,18 +162,18 @@ def finalize_target_task(recipe):
 @ task()
 def push_data_to_bucket():
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
     tmp_target = FSSpecTarget(fs=lfs, root_path="tmp_timeseries_real_time")
 
     dirs = target.fs.glob('timeseries_real_time/*')
     for directory in dirs:
         if os.path.isdir(directory):
-            os.mkdir(directory.replace('timeseries_real_time','tmp_timeseries_real_time'))
-    filenames = target.fs.glob('timeseries_real_time/*/*') + target.fs.glob('timeseries_real_time/*')
+            os.mkdir(directory.replace('timeseries_real_time2','tmp_timeseries_real_time2'))
+    filenames = target.fs.glob('timeseries_real_time2/*/*') + target.fs.glob('timeseries_real_time2/*')
     filenames = [filename for filename in filenames if 'z' in filename or '/time/' in filename]
 
     for filename in filenames:
-        lfs.move(filename, filename.replace('timeseries_real_time','tmp_timeseries_real_time'))
+        lfs.move(filename, filename.replace('timeseries_real_time2','tmp_timeseries_real_time2'))
 
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
     #target_remote = FSSpecTarget(fs=fs, root_path=Config.E5_BUCKET_ZARR_TS_NEW)
@@ -181,15 +181,15 @@ def push_data_to_bucket():
     fs.put(target.root_path, os.path.dirname(Config.E5_BUCKET_ZARR_TS_NEW), recursive=True)
 
     shutil.rmtree(target.root_path)
-    #target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    #target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
-    #filenames = target.fs.glob('tmp_timeseries_real_time/*/*')
+    #filenames = target.fs.glob('tmp_timeseries_real_time2/*/*')
 
-    lfs.move('tmp_timeseries_real_time/',
-             'timeseries_real_time', recursive=True)
+    lfs.move('tmp_timeseries_real_time2/',
+             'timeseries_real_time2', recursive=True)
 
     # for filename in filenames:
-    #     lfs.move(filename, filename.replace('tmp_timeseries_real_time','timeseries_real_time'))
+    #     lfs.move(filename, filename.replace('tmp_timeseries_real_time2','timeseries_real_time2'))
 
     fs.put(target.root_path, os.path.dirname(Config.E5_BUCKET_ZARR_TS_NEW), recursive=True)
 
