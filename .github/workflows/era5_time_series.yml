@@ -1,14 +1,13 @@
 name: DataOps - ERA5 Time series
 
 on:
-  schedule:
-    - cron: '0 10 * * 2'
+  push:
 
 jobs:
   run:
 
     name: Hydat-Forge Data Pipeline
-    runs-on: hydrocloud-4core
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: conda-incubator/setup-miniconda@v3
