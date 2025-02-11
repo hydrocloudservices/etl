@@ -73,7 +73,7 @@ def create_recipe(pattern):
     :return: Matrix with dates and variables to extract
     """
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
     recipe = XarrayZarrRecipe(
         file_pattern=pattern,
@@ -92,7 +92,7 @@ def prepare_target_task(config):
 @task()
 def post_process_dims(recipe, end_date):
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
     inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
         '%Y%m%d')
@@ -103,7 +103,7 @@ def post_process_dims(recipe, end_date):
     .to_xarray() \
     .to_zarr('tmp.zarr', consolidated=True, mode='w')
 
-    lfs.cp('tmp.zarr/time/', 'timeseries_real_time/time', recursive=True)
+    lfs.cp('tmp.zarr/time/', 'timeseries_real_time2/time', recursive=True)
     
     store = recipe.storage_config.target.get_mapper()
 #     ds = xr.open_zarr(store, consolidated=False, decode_times=False)
