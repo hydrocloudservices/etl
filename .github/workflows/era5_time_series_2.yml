@@ -1,0 +1,35 @@
+name: DataOps - ERA5 Time series
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  run:
+
+    name: Hydat-Forge Data Pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: etl
+          mamba-version: "*"
+          environment-file: .binder/environment.yml
+          python-version: 3.9
+          auto-activate-base: false
+      - shell: bash -l {0}
+        run: |
+            mkdir -p ~/.aws
+            touch ~/.aws/credentials
+            echo "
+            [default]
+            aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws_secret_access_key = ${{ secrets.AWS_SECRET_KEY_ID }}
+            region = us-east-1
+            source_profile = default" > ~/.aws/credentials
+            
+            python pipeline/era5-time-series-new.py
+
+            
+            

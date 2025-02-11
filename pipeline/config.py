@@ -4,7 +4,7 @@ import os
 
 class Config(object):
 
-    CLIENT_KWARGS = {'endpoint_url': 'https://s3.us-east-1.wasabisys.com',
+    CLIENT_KWARGS = {'endpoint_url': 'https://s3.wasabisys.com',
                      'region_name': 'us-east-1'}
     CONFIG_KWARGS = {'max_pool_connections': 30}
     PROFILE = 'default'
@@ -28,7 +28,8 @@ class Config(object):
     ]
 
     # ERA5-Land
-    E5L_BUCKET = 's3://era5/north-america/reanalysis/land/netcdf4'
+    E5L_BUCKET = 'era5/north-america/reanalysis/land/netcdf4'
+    #E5L_BUCKET = '/media/slanglois/ssd-2tb/era5/netcdf4'
     E5L_HTTPS_BUCKET = 'https://s3.us-east-1.wasabisys.com/era5/north-america/reanalysis/land/netcdf4'
     E5L_REFERENCE_TARGET = 'era5/north-america/reanalysis/land'
     E5L_META_BUCKET = os.path.join(E5L_REFERENCE_TARGET,'meta')
@@ -43,18 +44,23 @@ class Config(object):
     # ERA5 (single levels - time series)
     E5_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/era5/world/reanalysis/single-levels/netcdf4'
     E5_BUCKET_ZARR_TS = 'era5/world/reanalysis/single-levels/zarr/timeseries_real_time'
-
-    E5_BUCKET_ZARR_TS_NEW = 'era5/world/reanalysis/single-levels/zarr/timeseries'
-
     E5_TARGET_CHUNKS_TS = {"latitude": 7, "longitude": 7, "time": 1440}
     E5_START_DATE_TS = "1959-01-01"
-    E5_START_DATE_TS_NEW = "1940-01-01"
     E5_VARIABLES_TS = [
         "t2m",
         "tp"
     ]
 
-        # ERA5 (land - time series)
+ # ERA5 (single levels - time series new)
+    E5_BUCKET_ZARR_TS_NEW = 'era5/world/reanalysis/single-levels/zarr/timeseries_real_time2'
+    E5_VARIABLES_TS_NEW = [
+        "sf",
+        "mx2t",
+        "mn2t",
+        "ssrd"
+    ]
+
+    # ERA5 (land - time series)
     E5L_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/era5/north-america/reanalysis/land/netcdf4'
     E5L_BUCKET_ZARR_TS = 'era5/north-america/reanalysis/land/zarr/timeseries_real_time'
 
@@ -66,6 +72,20 @@ class Config(object):
         "sd"
     ]
 
+        # ERA5 (land - time series - new)
+    E5L_BUCKET_ZARR_TS_NEW = 'era5/north-america/reanalysis/land/zarr/timeseries_real_time2'
+    E5L_START_DATE_TS = "1950-01-01"
+    E5L_VARIABLES_TS_NEW = [
+        "sf",
+        "u10",
+        "v10",
+        "d2m",
+        "pev",
+        "sp",
+        "ssrd",
+        "strd"
+    ]
+
         # USGS (time series)
     USGS_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/hydrometric/timeseries'
     USGS_BUCKET_ZARR_TS = 'hydrometric/timeseries'
@@ -75,3 +95,7 @@ class Config(object):
     HYDROMETRIC_BUCKET_TS = 'https://s3.us-east-1.wasabisys.com/hydrometric/timeseries'
     HYDROMETRIC_BUCKET_ZARR_TS = 'hydrometric/timeseries'
     HYDROMETRIC_ROOT_TS = 'hydrometric'
+
+    # IFS
+    IFS_PL_REFERENCE_TARGET = 'ifs/0p25/world/forecast/pressure-levels'
+    IFS_PL_META_BUCKET = os.path.join(IFS_PL_REFERENCE_TARGET,'meta')
