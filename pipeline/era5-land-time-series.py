@@ -96,7 +96,7 @@ def post_process_dims(recipe, end_date):
 
     inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
         '%Y%m%d')
-    pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')\
+    pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', inclusive='left')\
     .to_series(name='time') \
     .to_frame() \
     .set_index('time') \
@@ -107,7 +107,7 @@ def post_process_dims(recipe, end_date):
     
     store = recipe.storage_config.target.get_mapper()
 #     ds = xr.open_zarr(store, consolidated=False, decode_times=False)
-#     ds['time'] = pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', closed='left')
+#     ds['time'] = pd.date_range(Config.E5L_START_DATE_TS, inclusive_end_date, freq='H', inclusive='left')
 #     ds.to_zarr(target.get_mapper(), compute=False, mode='a')
     zarr.consolidate_metadata(store)
 
