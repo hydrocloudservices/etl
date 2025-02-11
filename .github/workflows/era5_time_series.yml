@@ -2,16 +2,16 @@ name: DataOps - ERA5 Time series
 
 on:
   schedule:
-    - cron: '0 */3 * * *'
+    - cron: '0 0 * * 1'
 
 jobs:
   run:
 
     name: Hydat-Forge Data Pipeline
-    runs-on: ubuntu-latest
+    runs-on: hydrocloud-4core
     steps:
       - uses: actions/checkout@v2
-      - uses: conda-incubator/setup-miniconda@v2.1.1
+      - uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: etl
           mamba-version: "*"
