@@ -55,6 +55,8 @@ def get_file_pattern():
         end_date = pd.date_range(Config.E5_START_DATE_TS, periods=delta_days)[-1].strftime('%Y%m%d')
         pass
 
+    end_date = '20230325'
+
     years = pd.date_range(Config.E5_START_DATE_TS, end_date)
 
     pattern = FilePattern(
