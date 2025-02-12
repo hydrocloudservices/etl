@@ -152,7 +152,7 @@ def finalize_target_task(recipe):
 @ task()
 def push_data_to_bucket():
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
     fs = fsspec.filesystem('s3', **Config.STORAGE_OPTIONS)
     target_remote = FSSpecTarget(fs=fs, root_path=Config.E5L_BUCKET_ZARR_TS_NEW)
