@@ -54,7 +54,6 @@ def get_file_pattern():
     except:
         end_date = pd.date_range(Config.E5_START_DATE_TS, periods=delta_days)[-1].strftime('%Y%m%d')
         pass
-    end_date = '20240401'
 
     years = pd.date_range(Config.E5_START_DATE_TS, end_date)
 
@@ -150,7 +149,7 @@ def get_next_index(years):
 @task()
 def store_chunk_task(key, recipe):
     print(key)
-    #store_chunk(key, config=recipe)
+    store_chunk(key, config=recipe)
 
 @task()
 def get_files_to_process(config, next_index):
