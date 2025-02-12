@@ -1,9 +1,9 @@
 name: DataOps - ERA5 Time series
 
 on:
-  push:
-  #schedule:
-  #  - cron: '0 */3 * * *'
+  #push:
+  schedule:
+    - cron: '0 */2 * * *'
 
 jobs:
   run:
