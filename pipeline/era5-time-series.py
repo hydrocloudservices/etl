@@ -54,6 +54,7 @@ def get_file_pattern():
     except:
         end_date = pd.date_range(Config.E5_START_DATE_TS, periods=delta_days)[-1].strftime('%Y%m%d')
         pass
+    end_date = '20240401'
 
     years = pd.date_range(Config.E5_START_DATE_TS, end_date)
 
@@ -207,7 +208,7 @@ if __name__ == '__main__':
         next_index = get_next_index(years, upstream_tasks=[config])
         prepare = prepare_target_task(config=config, upstream_tasks=[next_index])
         filenames = get_files_to_process(config, next_index, upstream_tasks=[prepare])
-        store = store_chunk_task.map(filenames, recipe=unmapped(config))
+        #store = store_chunk_task.map(filenames, recipe=unmapped(config))
         postprocess = post_precess_dims(config, end_date, upstream_tasks=[store])
         final = finalize_target_task(config, upstream_tasks=[postprocess])
         push_data_to_bucket(upstream_tasks=[final])
