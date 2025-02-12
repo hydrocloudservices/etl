@@ -53,7 +53,6 @@ def get_file_pattern():
     except:
         end_date = pd.date_range(Config.E5L_START_DATE_TS, periods=delta_days)[-1].strftime('%Y%m%d')
         pass
-    end_date = '20240301'
 
     years = pd.date_range(Config.E5L_START_DATE_TS, end_date)
 
