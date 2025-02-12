@@ -74,7 +74,7 @@ def create_recipe(pattern):
     :return: Matrix with dates and variables to extract
     """
     lfs = LocalFileSystem()
-    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
     recipe = XarrayZarrRecipe(
         file_pattern=pattern,
@@ -93,7 +93,7 @@ def prepare_target_task(config):
 @task()
 def post_precess_dims(recipe, end_date):
     # lfs = LocalFileSystem()
-    # target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time")
+    # target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
 
     # inclusive_end_date = (datetime.datetime.strptime(end_date, '%Y%m%d') + datetime.timedelta(days=1)).strftime(
     #     '%Y%m%d')
@@ -163,9 +163,9 @@ def finalize_target_task(recipe):
 def push_data_to_bucket():
     lfs = LocalFileSystem()
     target = FSSpecTarget(fs=lfs, root_path="timeseries_real_time2")
-    tmp_target = FSSpecTarget(fs=lfs, root_path="tmp_timeseries_real_time")
+    tmp_target = FSSpecTarget(fs=lfs, root_path="tmp_timeseries_real_time2")
 
-    dirs = target.fs.glob('timeseries_real_time/*')
+    dirs = target.fs.glob('timeseries_real_time2/*')
     for directory in dirs:
         if os.path.isdir(directory):
             os.mkdir(directory.replace('timeseries_real_time2','tmp_timeseries_real_time2'))
