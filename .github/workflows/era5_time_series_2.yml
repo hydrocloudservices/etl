@@ -1,8 +1,7 @@
 name: DataOps - ERA5 Time series new
 
 on:
-  schedule:
-    - cron: '0 0 * * 1,4'
+  push:
 
 jobs:
   run:
@@ -16,7 +15,7 @@ jobs:
           activate-environment: etl
           mamba-version: "*"
           environment-file: .binder/environment.yml
-          python-version: 3.9
+          python-version: 3.10
           auto-activate-base: false
       - shell: bash -l {0}
         run: |
