@@ -1,7 +1,7 @@
 name: DataOps - ERA5-Land Time series
 
 on:
-  push
+  push:
 jobs:
   run:
 
