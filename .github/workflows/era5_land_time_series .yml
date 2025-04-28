@@ -1,8 +1,7 @@
 name: DataOps - ERA5-Land Time series
 
 on:
-  schedule:
-        - cron: '0 0 * * 1,4'
+  push:
 jobs:
   run:
 
