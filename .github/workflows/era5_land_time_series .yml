@@ -14,6 +14,7 @@ jobs:
         with:
           activate-environment: etl
           environment-file: .binder/environment.yml
+          conda-solver: libmamba
           python-version: 3.10
           auto-activate-base: false
       - shell: bash -l {0}
