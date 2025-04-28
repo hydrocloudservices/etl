@@ -1,8 +1,7 @@
 name: DataOps - ERA5 Time series
 
 on:
-  schedule:
-    - cron: '0 0 * * 1,4'
+  push:
 
 jobs:
   run:
@@ -14,7 +13,7 @@ jobs:
       - uses: conda-incubator/setup-miniconda@v3
         with:
           activate-environment: etl
-          mamba-version: "*"
+          auto-update-conda: true
           environment-file: .binder/environment.yml
           python-version: 3.10
           auto-activate-base: false
