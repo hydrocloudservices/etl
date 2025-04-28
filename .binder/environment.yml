@@ -6,7 +6,7 @@ dependencies:
   - s3fs
   - dask
   - distributed
-  - pandas<1.4
+  - pandas
   - fsspec
   - numcodecs
   - prefect=1.2.4
